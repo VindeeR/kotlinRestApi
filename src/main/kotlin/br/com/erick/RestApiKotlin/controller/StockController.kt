@@ -29,8 +29,8 @@ class StockController (private val service: StockService){
         }.orElse(ResponseEntity.notFound().build())
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: Long, @RequestBody updateProduct: UpdateProduct) {
-        service.update(id, updateProduct).map {
+    fun update(@PathVariable id: Long, @RequestBody updateProduct: UpdateProduct): ResponseEntity<Product>? {
+        return service.update(id, updateProduct).map {
             ResponseEntity.ok(it)
         }.orElse(ResponseEntity.notFound().build())
     }

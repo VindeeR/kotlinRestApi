@@ -33,12 +33,12 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
     }
 
     override fun update(id: Long, updateProduct: UpdateProduct): Optional<Product> {
-        if(updateProduct.quantity > 0){
-            val optional = getbyId(id)
-            if(optional.isEmpty) Optional.empty<Product>()
+        if(updateProduct.quantity >= 0){
+            val product = getbyId(id)
+            if(product.isEmpty) Optional.empty<Product>()
             val quantity = updateProduct.quantity
             updateStock(id, quantity)
-            return optional.map {
+            return product.map {
                 val productToUpdate = it.copy(
                     name = updateProduct.name,
                     description = updateProduct.description
@@ -69,6 +69,6 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
     }
 
     override fun getProductById(id: Long): Optional<Stock> {
-        return stockRepository.findById(id)
+        return stockRepository.findById(id.plus(1))
     }
 }
