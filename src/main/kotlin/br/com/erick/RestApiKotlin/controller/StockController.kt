@@ -23,8 +23,14 @@ class StockController (private val service: StockService){
     fun getAllStock(): List<Stock> = service.getAllStock()
 
     @GetMapping("/{id}")
-    fun getbyId(@PathVariable id: Long) : ResponseEntity<Product> =
+    fun getById(@PathVariable id: Long) : ResponseEntity<Product> =
         service.getbyId(id).map{
+            ResponseEntity.ok(it)
+        }.orElse(ResponseEntity.notFound().build())
+
+    @GetMapping("/getStock/{id}")
+    fun getStockById(@PathVariable id: Long) : ResponseEntity<Stock> =
+        service.getStockbyId(id).map{
             ResponseEntity.ok(it)
         }.orElse(ResponseEntity.notFound().build())
 
@@ -38,6 +44,12 @@ class StockController (private val service: StockService){
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long) : ResponseEntity<Void> {
         service.delete(id)
+        return ResponseEntity<Void>(HttpStatus.OK)
+    }
+
+    @DeleteMapping("/deleteStock/{id}")
+    fun deleteStock(@PathVariable id: Long) : ResponseEntity<Void> {
+        service.deleteStock(id)
         return ResponseEntity<Void>(HttpStatus.OK)
     }
 }
