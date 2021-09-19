@@ -13,7 +13,7 @@ import java.util.*
 @Service
 class StockServiceImpl(private val productRepository: ProductRepository, private val stockRepository: StockRepository) :
     StockService {
-    override fun create(productStock: ProductStock): Product {
+    override fun createProduct(productStock: ProductStock): Product {
         val product = Product(description = productStock.description, name = productStock.name)
         val productAux = productRepository.save(product)
         val stock = Stock(productId = productAux.id!!, quantityProduct = 0)
@@ -29,11 +29,11 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
         return stockRepository.findAll()
     }
 
-    override fun getbyId(id: Long): Optional<Product> {
+    override fun getProductById(id: Long): Optional<Product> {
         return productRepository.findById(id)
     }
 
-    override fun getStockbyId(id: Long): Optional<Stock> {
+    override fun getStockById(id: Long): Optional<Stock> {
         return stockRepository.findById(id)
     }
 
@@ -41,28 +41,31 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
         return stockRepository.findById(id.plus(1))
     }
 
-    override fun update(id: Long, productStock: ProductStock): Optional<Product> {
+    override fun updateProduct(id: Long, productStock: ProductStock): Optional<Product> {
         if (productStock.quantity >= 0) {
             val quantity = productStock.quantity
             updateStock(id, quantity)
         }
 
-        val product = getbyId(id)
+        val product = getProductById(id)
         if (product.isEmpty) Optional.empty<Product>()
         when {
             productStock.name == "" && productStock.description == "" -> return Optional.empty<Product>()
+
             productStock.name == "" -> return product.map {
                 val productToUpdate = it.copy(
                     description = productStock.description
                 )
                 productRepository.save(productToUpdate)
             }
+
             productStock.description == "" -> return product.map {
                 val productToUpdate = it.copy(
                     name = productStock.name
                 )
                 productRepository.save(productToUpdate)
             }
+
             else -> return product.map {
                 val productToUpdate = it.copy(
                     name = productStock.name,
@@ -74,7 +77,7 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
         return Optional.empty()
     }
 
-    override fun addProduct(id: Long, quantity: Int): Optional<Stock> {
+    override fun addQuantityStock(id: Long, quantity: Int): Optional<Stock> {
 
         val stock: Optional<Stock> = getStockByProductId(id)
         if(stock.get().quantityProduct + quantity >= 0){
@@ -89,7 +92,7 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
     }
 
     override fun updateStock(id: Long, quantity: Int) {
-        val optional = getbyId(id)
+        val optional = getStockById(id)
         if(optional.isEmpty) Optional.empty<Stock>()
 
         val stock: Optional<Stock> = getStockByProductId(id)
@@ -101,7 +104,7 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
         }
     }
 
-    override fun delete(id: Long) {
+    override fun deleteProduct(id: Long) {
         updateStock(id, 0)
         productRepository.findById(id).map {
             productRepository.delete(it)
@@ -110,7 +113,7 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
 
     override fun deleteStock(id: Long){
         when{
-            getbyId(id.minus(1)).isEmpty.not() -> delete(id.minus(1))
+            getStockById(id.minus(1)).isEmpty.not() -> deleteProduct(id.minus(1))
         }
         stockRepository.findById(id).map {
             stockRepository.delete(it)
