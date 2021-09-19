@@ -1,12 +1,11 @@
 package br.com.erick.RestApiKotlin
 
 import br.com.erick.RestApiKotlin.model.Product
-import br.com.erick.RestApiKotlin.model.UpdateProduct
+import br.com.erick.RestApiKotlin.model.ProductStock
 import br.com.erick.RestApiKotlin.repository.ProductRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.mockito.internal.matchers.Null
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -71,16 +70,16 @@ class ProductControllerTest {
 		val product = productRepository
 			.save(Product(name = "Test", description = "descricao"))
 			.copy(name = "Updated", description = "test")
-		val updateProduct = UpdateProduct(name = product.name, description = product.description, quantity = 0) // Quantity para testar regra do negocio aonde não se pode
+		val productStock = ProductStock(name = product.name, description = product.description, quantity = 0) // Quantity para testar regra do negocio aonde não se pode
 		// atualizar valor para qualquer coisa menor que 0
-		val json = ObjectMapper().writeValueAsString(updateProduct)
+		val json = ObjectMapper().writeValueAsString(productStock)
 		mockMvc.perform(MockMvcRequestBuilders.put("/stock/${product.id}")
 			.accept(MediaType.APPLICATION_JSON)
 			.contentType(MediaType.APPLICATION_JSON)
 			.content(json))
 			.andExpect(MockMvcResultMatchers.status().isOk)
-			.andExpect(MockMvcResultMatchers.jsonPath("\$.name").value(updateProduct.name))
-			.andExpect(MockMvcResultMatchers.jsonPath("\$.description").value(updateProduct.description))
+			.andExpect(MockMvcResultMatchers.jsonPath("\$.name").value(productStock.name))
+			.andExpect(MockMvcResultMatchers.jsonPath("\$.description").value(productStock.description))
 			.andDo(MockMvcResultHandlers.print())
 
 		val findById = productRepository.findById(product.id!!)
@@ -93,9 +92,9 @@ class ProductControllerTest {
 		val product = productRepository
 			.save(Product(name = "Test", description = "descricao"))
 			.copy(name = "Updated", description = "test")
-		val updateProduct = UpdateProduct(name = product.name, description = product.description, quantity = -1) // Quantity para testar regra do negocio aonde não se pode
+		val productStock = ProductStock(name = product.name, description = product.description, quantity = -1) // Quantity para testar regra do negocio aonde não se pode
 		// atualizar valor para qualquer coisa menor que 0
-		val json = ObjectMapper().writeValueAsString(updateProduct)
+		val json = ObjectMapper().writeValueAsString(productStock)
 		mockMvc.perform(MockMvcRequestBuilders.put("/stock/${product.id}")
 			.accept(MediaType.APPLICATION_JSON)
 			.contentType(MediaType.APPLICATION_JSON)
@@ -111,9 +110,9 @@ class ProductControllerTest {
 	fun `test update quantity`() {
 		val product = productRepository
 			.save(Product(name = "Test", description = "descricao")).copy()
-		val updateProduct = UpdateProduct(name = "", description = "", quantity = 10) // Quantity para testar regra do negocio aonde não se pode
+		val productStock = ProductStock(name = "", description = "", quantity = 10) // Quantity para testar regra do negocio aonde não se pode
 		// atualizar valor para qualquer coisa menor que 0
-		val json = ObjectMapper().writeValueAsString(updateProduct)
+		val json = ObjectMapper().writeValueAsString(productStock)
 		mockMvc.perform(MockMvcRequestBuilders.put("/stock/${product.id}")
 			.accept(MediaType.APPLICATION_JSON)
 			.contentType(MediaType.APPLICATION_JSON)

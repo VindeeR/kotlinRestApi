@@ -2,11 +2,11 @@ package br.com.erick.RestApiKotlin.service
 
 import br.com.erick.RestApiKotlin.model.Product
 import br.com.erick.RestApiKotlin.model.Stock
-import br.com.erick.RestApiKotlin.model.UpdateProduct
+import br.com.erick.RestApiKotlin.model.ProductStock
 import java.util.*
 
 interface StockService {
-    fun create(product: Product): Product
+    fun create(productStock: ProductStock): Product
 
     fun getAllProduct(): List<Product>
 
@@ -14,7 +14,9 @@ interface StockService {
 
     fun getbyId( id: Long ) : Optional<Product>
 
-    fun update(id: Long, updateProduct: UpdateProduct) : Optional<Product>
+    fun update(id: Long, productStock: ProductStock) : Optional<Product>
+
+    fun addProduct(id: Long, quantity: Int) : Optional<Stock>
 
     fun delete(id: Long)
 
