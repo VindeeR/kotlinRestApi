@@ -1,9 +1,9 @@
-package br.com.erick.RestApiKotlin.controller
+package br.com.erick.restApiKotlin.controller
 
-import br.com.erick.RestApiKotlin.model.Product
-import br.com.erick.RestApiKotlin.model.Stock
-import br.com.erick.RestApiKotlin.model.ProductStock
-import br.com.erick.RestApiKotlin.service.StockService
+import br.com.erick.restApiKotlin.model.Product
+import br.com.erick.restApiKotlin.model.Stock
+import br.com.erick.restApiKotlin.model.ProductStock
+import br.com.erick.restApiKotlin.service.StockService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

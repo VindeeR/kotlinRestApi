@@ -1,6 +1,6 @@
-package br.com.erick.RestApiKotlin.repository
+package br.com.erick.restApiKotlin.repository
 
-import br.com.erick.RestApiKotlin.model.Stock
+import br.com.erick.restApiKotlin.model.Stock
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface StockRepository : JpaRepository<Stock, Long> {

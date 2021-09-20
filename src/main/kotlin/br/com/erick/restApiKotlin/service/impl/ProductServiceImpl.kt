@@ -1,11 +1,11 @@
-package br.com.erick.RestApiKotlin.service.impl
+package br.com.erick.restApiKotlin.service.impl
 
-import br.com.erick.RestApiKotlin.model.Product
-import br.com.erick.RestApiKotlin.model.Stock
-import br.com.erick.RestApiKotlin.model.ProductStock
-import br.com.erick.RestApiKotlin.repository.ProductRepository
-import br.com.erick.RestApiKotlin.repository.StockRepository
-import br.com.erick.RestApiKotlin.service.StockService
+import br.com.erick.restApiKotlin.model.Product
+import br.com.erick.restApiKotlin.model.Stock
+import br.com.erick.restApiKotlin.model.ProductStock
+import br.com.erick.restApiKotlin.repository.ProductRepository
+import br.com.erick.restApiKotlin.repository.StockRepository
+import br.com.erick.restApiKotlin.service.StockService
 import org.springframework.stereotype.Service
 import java.lang.RuntimeException
 import java.util.*

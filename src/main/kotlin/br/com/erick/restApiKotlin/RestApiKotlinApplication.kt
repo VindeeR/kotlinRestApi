@@ -1,4 +1,4 @@
-package br.com.erick.RestApiKotlin
+package br.com.erick.restApiKotlin
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

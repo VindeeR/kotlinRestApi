@@ -1,8 +1,8 @@
-package br.com.erick.RestApiKotlin.service
+package br.com.erick.restApiKotlin.service
 
-import br.com.erick.RestApiKotlin.model.Product
-import br.com.erick.RestApiKotlin.model.Stock
-import br.com.erick.RestApiKotlin.model.ProductStock
+import br.com.erick.restApiKotlin.model.Product
+import br.com.erick.restApiKotlin.model.Stock
+import br.com.erick.restApiKotlin.model.ProductStock
 import java.util.*
 
 interface StockService {

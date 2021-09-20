@@ -1,4 +1,4 @@
-package br.com.erick.RestApiKotlin.model
+package br.com.erick.restApiKotlin.model
 
 import javax.persistence.GeneratedValue
 import javax.persistence.Id

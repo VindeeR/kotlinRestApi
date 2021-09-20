@@ -1,8 +1,8 @@
-package br.com.erick.RestApiKotlin
+package br.com.erick.restApiKotlin
 
-import br.com.erick.RestApiKotlin.model.Product
-import br.com.erick.RestApiKotlin.model.ProductStock
-import br.com.erick.RestApiKotlin.repository.ProductRepository
+import br.com.erick.restApiKotlin.model.Product
+import br.com.erick.restApiKotlin.model.ProductStock
+import br.com.erick.restApiKotlin.repository.ProductRepository
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
