@@ -16,7 +16,8 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
     override fun createProduct(productStock: ProductStock): Product {
         val product = Product(description = productStock.description, name = productStock.name)
         val productAux = productRepository.save(product)
-        val stock = Stock(productId = productAux.id!!, quantityProduct = 0)
+        val quantity = if(productStock.quantity >= 0) productStock.quantity else 0
+        val stock = Stock(productId = productAux.id!!, quantityProduct = quantity)
         stockRepository.save(stock)
         return productAux
     }
