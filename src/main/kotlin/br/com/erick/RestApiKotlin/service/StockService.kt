@@ -16,8 +16,6 @@ interface StockService {
 
     fun getProductById( id: Long ) : Optional<Product>
 
-    fun getStockByProductId(id: Long): Optional<Stock>
-
     fun updateProduct(id: Long, productStock: ProductStock) : Optional<Product>
 
     fun addQuantityStock(id: Long, quantity: Int) : Optional<Stock>

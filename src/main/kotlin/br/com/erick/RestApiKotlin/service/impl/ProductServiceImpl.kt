@@ -37,14 +37,10 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
         return stockRepository.findById(id)
     }
 
-    override fun getStockByProductId(id: Long): Optional<Stock> {
-        return stockRepository.findById(id.plus(1))
-    }
-
     override fun updateProduct(id: Long, productStock: ProductStock): Optional<Product> {
         if (productStock.quantity >= 0) {
             val quantity = productStock.quantity
-            updateStock(id, quantity)
+            addQuantityStock(id, quantity)
         }
 
         val product = getProductById(id)
@@ -79,7 +75,7 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
 
     override fun addQuantityStock(id: Long, quantity: Int): Optional<Stock> {
 
-        val stock: Optional<Stock> = getStockByProductId(id)
+        val stock: Optional<Stock> = getStockById(id.plus(1))
         if(stock.get().quantityProduct + quantity >= 0){
             return stock.map {
                 val stockToUpdate = it.copy(
@@ -95,7 +91,7 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
         val optional = getStockById(id)
         if(optional.isEmpty) Optional.empty<Stock>()
 
-        val stock: Optional<Stock> = getStockByProductId(id)
+        val stock: Optional<Stock> = getStockById(id.plus(1))
         stock.map {
             val stockToUpdate = it.copy(
                 quantityProduct = quantity
@@ -113,7 +109,7 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
 
     override fun deleteStock(id: Long){
         when{
-            getStockById(id.minus(1)).isEmpty.not() -> deleteProduct(id.minus(1))
+            getProductById(id.minus(1)).isEmpty.not() -> deleteProduct(id.minus(1))
         }
         stockRepository.findById(id).map {
             stockRepository.delete(it)
