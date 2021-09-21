@@ -1,8 +1,8 @@
 package br.com.erick.restApiKotlin.service.impl
 
-import br.com.erick.restApiKotlin.model.Product
-import br.com.erick.restApiKotlin.model.Stock
-import br.com.erick.restApiKotlin.model.ProductStock
+import br.com.erick.restApiKotlin.model.ProductDTO
+import br.com.erick.restApiKotlin.model.StockDTO
+import br.com.erick.restApiKotlin.model.ProductStockDTO
 import br.com.erick.restApiKotlin.repository.ProductRepository
 import br.com.erick.restApiKotlin.repository.StockRepository
 import br.com.erick.restApiKotlin.service.StockService
@@ -13,60 +13,59 @@ import java.util.*
 @Service
 class StockServiceImpl(private val productRepository: ProductRepository, private val stockRepository: StockRepository) :
     StockService {
-    override fun createProduct(productStock: ProductStock): Product {
-        val product = Product(description = productStock.description, name = productStock.name)
-        val productAux = productRepository.save(product)
-        val quantity = if(productStock.quantity >= 0) productStock.quantity else 0
-        val stock = Stock(productId = productAux.id!!, quantityProduct = quantity)
-        stockRepository.save(stock)
+    override fun createProduct(productStockDTO: ProductStockDTO): ProductDTO {
+        val productDTO = ProductDTO(description = productStockDTO.description, name = productStockDTO.name)
+        val productAux = productRepository.save(productDTO)
+        val quantity = if(productStockDTO.quantity >= 0) productStockDTO.quantity else 0
+        val stockDTO = StockDTO(productId = productAux.id!!, quantityProduct = quantity)
+        stockRepository.save(stockDTO)
         return productAux
     }
 
-    override fun getAllProduct(): List<Product> {
+    override fun getAllProduct(): List<ProductDTO> {
         return productRepository.findAll()
     }
 
-    override fun getAllStock(): List<Stock> {
+    override fun getAllStock(): List<StockDTO> {
         return stockRepository.findAll()
     }
 
-    override fun getProductById(id: Long): Optional<Product> {
+    override fun getProductById(id: Long): Optional<ProductDTO> {
         return productRepository.findById(id)
     }
 
-    override fun getStockById(id: Long): Optional<Stock> {
+    override fun getStockById(id: Long): Optional<StockDTO> {
         return stockRepository.findById(id)
     }
 
-    override fun updateProduct(id: Long, productStock: ProductStock): Optional<Product> {
-        if (productStock.quantity >= 0) {
-            val quantity = productStock.quantity
-            addQuantityStock(id, quantity)
+    override fun updateProduct(id: Long, productStockDTO: ProductStockDTO): Optional<ProductDTO> {
+        if (productStockDTO.quantity >= 0) {
+            addQuantityStock(id, productStockDTO.quantity)
         }
 
         val product = getProductById(id)
-        if (product.isEmpty) Optional.empty<Product>()
+        if (product.isEmpty) Optional.empty<ProductDTO>()
         when {
-            productStock.name == "" && productStock.description == "" -> return Optional.empty<Product>()
+            productStockDTO.name == "" && productStockDTO.description == "" -> return Optional.empty<ProductDTO>()
 
-            productStock.name == "" -> return product.map {
+            productStockDTO.name == "" -> return product.map {
                 val productToUpdate = it.copy(
-                    description = productStock.description
+                    description = productStockDTO.description
                 )
                 productRepository.save(productToUpdate)
             }
 
-            productStock.description == "" -> return product.map {
+            productStockDTO.description == "" -> return product.map {
                 val productToUpdate = it.copy(
-                    name = productStock.name
+                    name = productStockDTO.name
                 )
                 productRepository.save(productToUpdate)
             }
 
             else -> return product.map {
                 val productToUpdate = it.copy(
-                    name = productStock.name,
-                    description = productStock.description
+                    name = productStockDTO.name,
+                    description = productStockDTO.description
                 )
                 productRepository.save(productToUpdate)
             }
@@ -74,11 +73,10 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
         return Optional.empty()
     }
 
-    override fun addQuantityStock(id: Long, quantity: Int): Optional<Stock> {
-
-        val stock: Optional<Stock> = getStockById(id.plus(1))
-        if(stock.get().quantityProduct + quantity >= 0){
-            return stock.map {
+    override fun addQuantityStock(id: Long, quantity: Int): Optional<StockDTO> {
+        val stockDTO: Optional<StockDTO> = getStockById(id.plus(1))
+        if(stockDTO.get().quantityProduct + quantity >= 0){
+            return stockDTO.map {
                 val stockToUpdate = it.copy(
                     quantityProduct = quantity + it.quantityProduct
                 )
@@ -90,10 +88,10 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
 
     override fun updateStock(id: Long, quantity: Int) {
         val optional = getStockById(id)
-        if(optional.isEmpty) Optional.empty<Stock>()
+        if(optional.isEmpty) Optional.empty<StockDTO>()
 
-        val stock: Optional<Stock> = getStockById(id.plus(1))
-        stock.map {
+        val stockDTO: Optional<StockDTO> = getStockById(id.plus(1))
+        stockDTO.map {
             val stockToUpdate = it.copy(
                 quantityProduct = quantity
             )

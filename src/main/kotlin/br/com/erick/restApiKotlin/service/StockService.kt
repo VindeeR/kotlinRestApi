@@ -1,24 +1,24 @@
 package br.com.erick.restApiKotlin.service
 
-import br.com.erick.restApiKotlin.model.Product
-import br.com.erick.restApiKotlin.model.Stock
-import br.com.erick.restApiKotlin.model.ProductStock
+import br.com.erick.restApiKotlin.model.ProductDTO
+import br.com.erick.restApiKotlin.model.StockDTO
+import br.com.erick.restApiKotlin.model.ProductStockDTO
 import java.util.*
 
 interface StockService {
-    fun createProduct(productStock: ProductStock): Product
+    fun createProduct(productStockDTO: ProductStockDTO): ProductDTO
 
-    fun getAllProduct(): List<Product>
+    fun getAllProduct(): List<ProductDTO>
 
-    fun getAllStock(): List<Stock>
+    fun getAllStock(): List<StockDTO>
 
-    fun getStockById(id: Long): Optional<Stock>
+    fun getStockById(id: Long): Optional<StockDTO>
 
-    fun getProductById( id: Long ) : Optional<Product>
+    fun getProductById( id: Long ) : Optional<ProductDTO>
 
-    fun updateProduct(id: Long, productStock: ProductStock) : Optional<Product>
+    fun updateProduct(id: Long, productStockDTO: ProductStockDTO) : Optional<ProductDTO>
 
-    fun addQuantityStock(id: Long, quantity: Int) : Optional<Stock>
+    fun addQuantityStock(id: Long, quantity: Int) : Optional<StockDTO>
 
     fun updateStock(id: Long, quantity: Int)
 

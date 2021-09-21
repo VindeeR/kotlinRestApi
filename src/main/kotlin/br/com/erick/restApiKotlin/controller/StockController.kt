@@ -1,48 +1,48 @@
 package br.com.erick.restApiKotlin.controller
 
-import br.com.erick.restApiKotlin.model.Product
-import br.com.erick.restApiKotlin.model.Stock
-import br.com.erick.restApiKotlin.model.ProductStock
+import br.com.erick.restApiKotlin.model.ProductDTO
+import br.com.erick.restApiKotlin.model.StockDTO
+import br.com.erick.restApiKotlin.model.ProductStockDTO
 import br.com.erick.restApiKotlin.service.StockService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/stock")
+@RequestMapping("/service")
 class StockController (private val service: StockService){
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    fun createProduct(@RequestBody productStock: ProductStock): Product = service.createProduct(productStock)
+    fun createProduct(@RequestBody productStockDTO: ProductStockDTO): ProductDTO = service.createProduct(productStockDTO)
 
     @GetMapping
-    fun getAllProduct(): List<Product> = service.getAllProduct()
+    fun getAllProduct(): List<ProductDTO> = service.getAllProduct()
 
-    @GetMapping("/getStock")
-    fun getAllStock(): List<Stock> = service.getAllStock()
+    @GetMapping("/stock")
+    fun getAllStock(): List<StockDTO> = service.getAllStock()
 
     @GetMapping("/{id:[\\d]+}")
-    fun getProductById(@PathVariable id: Long) : ResponseEntity<Product> =
+    fun getProductById(@PathVariable id: Long) : ResponseEntity<ProductDTO> =
         service.getProductById(id).map{
             ResponseEntity.ok(it)
         }.orElse(ResponseEntity.notFound().build())
 
-    @GetMapping("/getStock/{id:[\\d]+}")
-    fun getStockById(@PathVariable id: Long) : ResponseEntity<Stock> =
+    @GetMapping("/stock/{id:[\\d]+}")
+    fun getStockById(@PathVariable id: Long) : ResponseEntity<StockDTO> =
         service.getStockById(id).map{
             ResponseEntity.ok(it)
         }.orElse(ResponseEntity.notFound().build())
 
     @PutMapping("/{id:[\\d]+}")
-    fun updateProduct(@PathVariable id: Long, @RequestBody productStock: ProductStock): ResponseEntity<Product>? {
-        return service.updateProduct(id, productStock).map {
+    fun updateProduct(@PathVariable id: Long, @RequestBody productStockDTO: ProductStockDTO): ResponseEntity<ProductDTO>? {
+        return service.updateProduct(id, productStockDTO).map {
             ResponseEntity.ok(it)
         }.orElse(ResponseEntity.notFound().build())
     }
 
-    @PutMapping("/addStock/{id:[\\d]+}")
-    fun addQuantityStock(@PathVariable id: Long, @RequestBody quantity: Int): ResponseEntity<Stock>? {
+    @PutMapping("/stock/{id:[\\d]+}")
+    fun addQuantityStock(@PathVariable id: Long, @RequestBody quantity: Int): ResponseEntity<StockDTO>? {
         return service.addQuantityStock(id, quantity).map {
             ResponseEntity.ok(it)
         }.orElse(ResponseEntity.notFound().build())
@@ -54,7 +54,7 @@ class StockController (private val service: StockService){
         return ResponseEntity<Void>(HttpStatus.OK)
     }
 
-    @DeleteMapping("/deleteStock/{id:[\\d]+}")
+    @DeleteMapping("/stock/{id:[\\d]+}")
     fun deleteStock(@PathVariable id: Long) : ResponseEntity<Void> {
         service.deleteStock(id)
         return ResponseEntity<Void>(HttpStatus.OK)

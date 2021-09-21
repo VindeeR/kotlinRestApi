@@ -1,13 +1,12 @@
 package br.com.erick.restApiKotlin.model
 
-import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
-@Entity(name = "stocks")
-data class Stock (
+data class ProductStockDTO(
     @Id @GeneratedValue
     var id: Long? = null,
-    val productId: Long,
-    val quantityProduct: Int = 0
+    var name: String,
+    var description: String,
+    var quantity: Int
 )

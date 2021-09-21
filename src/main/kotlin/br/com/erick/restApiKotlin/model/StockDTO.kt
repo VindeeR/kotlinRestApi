@@ -4,10 +4,10 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
-@Entity(name = "products")
-data class Product(
+@Entity(name = "stocks")
+data class StockDTO (
     @Id @GeneratedValue
-    var id: Long? = 0,
-    var name: String,
-    var description: String
+    var id: Long? = null,
+    val productId: Long,
+    val quantityProduct: Int = 0
 )
