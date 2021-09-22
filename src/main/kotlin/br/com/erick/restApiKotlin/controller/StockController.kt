@@ -43,7 +43,7 @@ class StockController (private val service: StockService){
 
     @PutMapping("/stock/{id:[\\d]+}")
     fun addQuantityStock(@PathVariable id: Long, @RequestBody quantity: Int): ResponseEntity<StockDTO>? {
-        return service.addQuantityStock(id, quantity).map {
+        return service.updateQuantityStock(id, quantity).map {
             ResponseEntity.ok(it)
         }.orElse(ResponseEntity.notFound().build())
     }

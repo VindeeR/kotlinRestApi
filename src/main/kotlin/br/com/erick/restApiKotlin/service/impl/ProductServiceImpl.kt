@@ -40,7 +40,7 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
 
     override fun updateProduct(id: Long, productStockDTO: ProductStockDTO): Optional<ProductDTO> {
         if (productStockDTO.quantity >= 0) {
-            addQuantityStock(id, productStockDTO.quantity)
+            updateQuantityStock(id, productStockDTO.quantity)
         }
 
         val product = getProductById(id)
@@ -73,7 +73,7 @@ class StockServiceImpl(private val productRepository: ProductRepository, private
         return Optional.empty()
     }
 
-    override fun addQuantityStock(id: Long, quantity: Int): Optional<StockDTO> {
+    override fun updateQuantityStock(id: Long, quantity: Int): Optional<StockDTO> {
         val stockDTO: Optional<StockDTO> = getStockById(id.plus(1))
         if(stockDTO.get().quantityProduct + quantity >= 0){
             return stockDTO.map {

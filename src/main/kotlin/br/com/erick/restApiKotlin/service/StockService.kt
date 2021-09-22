@@ -18,7 +18,7 @@ interface StockService {
 
     fun updateProduct(id: Long, productStockDTO: ProductStockDTO) : Optional<ProductDTO>
 
-    fun addQuantityStock(id: Long, quantity: Int) : Optional<StockDTO>
+    fun updateQuantityStock(id: Long, quantity: Int) : Optional<StockDTO>
 
     fun updateStock(id: Long, quantity: Int)
 
